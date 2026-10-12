@@ -20,6 +20,34 @@ public:
         lastIndex = -1;
         ptr = new int[cap];
     }
+    Array(Array &arr)
+    {
+        capacity = arr.capacity;
+        lastIndex = arr.lastIndex;
+        ptr = new int[capacity];
+        for (int i = 0; i < lastIndex; i++)
+        {
+            ptr[i] = arr.ptr[i];
+        }
+    }
+    Array &Array::operator=(Array &arr)
+    {
+        if(this == &arr){
+            return *this;
+        }
+
+        delete[] ptr;
+        
+        capacity = arr.capacity;
+        lastIndex = arr.lastIndex;
+
+        ptr = new int[capacity];
+        for (int i = 0; i < lastIndex; i++)
+        {
+            ptr[i] = arr.ptr[i];
+        }
+        return *this;
+    }
     void displayLastIndex()
     {
         cout << "\nLastIndex: " << lastIndex;
@@ -81,28 +109,38 @@ public:
         {
             throw INVALIDINDEX;
         }
-        for(int i=index; i<lastIndex; i++){
-            ptr[i]=ptr[i+1];
+        for (int i = index; i < lastIndex; i++)
+        {
+            ptr[i] = ptr[i + 1];
         }
         lastIndex--;
     }
-    int getElementByIndex(int index){
-        if(index<0){
+    int getElementByIndex(int index)
+    {
+        if (index < 0)
+        {
             throw INVALIDINDEX;
         }
         return ptr[index];
     }
-    int countArrayElements(){
-        return lastIndex+1;
+    int countArrayElements()
+    {
+        return lastIndex + 1;
     }
-    ~Array(){
-        delete []ptr;
+    ~Array()
+    {
+        delete[] ptr;
     }
-    int findElement(int element){
-        for(int i=0; i<lastIndex; i++){
-            if(ptr[i]==element){
+    int findElement(int element)
+    {
+        for (int i = 0; i < lastIndex; i++)
+        {
+            if (ptr[i] == element)
+            {
                 return i;
-            } else {
+            }
+            else
+            {
                 return -1;
             }
         }
@@ -133,16 +171,17 @@ int main()
         a1.displayLastIndex();
         a1.deleteElement(3);
         a1.displayLastIndex();
-        cout<<"\nValue is: "<<a1.getElementByIndex(0);
-        cout<<"\nElement count is: "<<a1.countArrayElements();
-        int val=a1.findElement(10);
-        if(val==-1){
-            cout<<"\nElement not found";
-        } else {
-            cout<<"\nElement found at index: "<<val;
+        cout << "\nValue is: " << a1.getElementByIndex(0);
+        cout << "\nElement count is: " << a1.countArrayElements();
+        int val = a1.findElement(10);
+        if (val == -1)
+        {
+            cout << "\nElement not found";
         }
-
-        
+        else
+        {
+            cout << "\nElement found at index: " << val;
+        }
     }
     catch (int e)
     {
@@ -156,6 +195,10 @@ int main()
             cout << "\nInvalid index";
         }
     }
+
+    Array a2(20);
+    a1 = a2;
+    a2.displayLastIndex();
 
     return 0;
 }
