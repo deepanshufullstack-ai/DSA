@@ -69,6 +69,39 @@ public:
     void insertAfterTheSpecifiedNode()
     {
     }
+    void deleteFirstNode(){
+        node *t;
+        if(start!=nullptr){
+            if(start->next==nullptr){
+                delete start;
+                start=nullptr;   
+            } else {
+                t=start;
+                t->next->prev=nullptr;
+                start=t->next;
+                delete t;
+            }
+        }
+    }
+    void deleteLastNode(){
+        node *t;
+        if(start!=nullptr){
+            if(start->next==nullptr){
+                delete start;
+                start=nullptr;
+            } else {
+                t=start;
+                while(t->next->next!=nullptr){
+                    t=t->next;
+                }
+                delete t->next;
+                t->next=nullptr;
+            }
+        }
+    }
+    void deleteNode(){
+        
+    }
     void display()
     {
         node *temp = start; // create a temporary pointer to traverse the list
