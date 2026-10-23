@@ -164,197 +164,153 @@
 
 #include <iostream>
 using namespace std;
-class DynArray
-{
-    int capacity;
-    int lastIndex;
-    int *ptr;
+class DynArray {
+  int capacity;
+  int lastIndex;
+  int *ptr;
 
 public:
-    DynArray(int c)
-    {
-        if (c < 0)
-        {
-            c = -c;
-        }
-        capacity = c;
-        lastIndex - 1;
-        ptr = new int[capacity];
+  DynArray(int c) {
+    if (c < 0) {
+      c = -c;
     }
-    void doubleArray()
-    {
-        int *temp;
-        temp = new int[capacity * 2];
-        for (int i = 0; i <= lastIndex; i++)
-        {
-            temp[i] = ptr[i];
-        }
-        delete[] ptr;
-        ptr = temp;
-        capacity = capacity * 2;
+    capacity = c;
+    lastIndex = -1;
+    ptr = new int[capacity];
+  }
+  void doubleArray() {
+    int *temp;
+    temp = new int[capacity * 2];
+    for (int i = 0; i <= lastIndex; i++) {
+      temp[i] = ptr[i];
     }
-    void halfArray()
-    {
-        int *temp;
-        temp = new int[capacity / 2];
-        for (int i = 0; i <= lastIndex; i++)
-        {
-            temp[i] = ptr[i];
-        }
-        delete[] ptr;
-        ptr = temp;
-        capacity = capacity / 2;
+    delete[] ptr;
+    ptr = temp;
+    capacity = capacity * 2;
+  }
+  void halfArray() {
+    int *temp;
+    temp = new int[capacity / 2];
+    for (int i = 0; i <= lastIndex; i++) {
+      temp[i] = ptr[i];
     }
-    int currentCapacity()
-    {
-        return capacity;
+    delete[] ptr;
+    ptr = temp;
+    capacity = capacity / 2;
+  }
+  int currentCapacity() { return capacity; }
+  bool arrayEmptyOrNot() {
+    if (lastIndex == -1) {
+      return true;
+    } else {
+      return false;
     }
-    bool arrayEmptyOrNot()
-    {
-        if (lastIndex == -1)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+  }
+  void appendNewElement(int element) {
+    if (arrayIsFullOrNot()) {
+      doubleArray();
     }
-    void appendNewElement(int element)
-    {
-        if (lastIndex == capacity - 1)
-        {
-            doubleArray();
-        }
-        else
-        {
-            ptr[lastIndex + 1] = element;
-            lastIndex++;
-        }
+    ptr[lastIndex + 1] = element;
+    lastIndex++;
+  }
+  void insertNewELementAtSpecificIndex(int element, int index) {
+    if (index < 0) {
+      cout << "\nInvalid index";
+      return;
     }
-    void insertNewELementAtSpecificIndex(int element, int index)
-    {
-        if (index < 0)
-        {
-            cout << "\nInvalid index";
-        }
 
-        if (lastIndex == capacity - 1)
-        {
-            doubleArray();
-        }
+    if (arrayIsFullOrNot()) {
+      doubleArray();
+    }
 
-        for (int i = lastIndex; i >= index; i--)
-        {
-            ptr[i + 1] = ptr[i];
-        }
+    for (int i = lastIndex; i >= index; i--) {
+      ptr[i + 1] = ptr[i];
+    }
 
-        ptr[index] = element;
-        lastIndex++;
+    ptr[index] = element;
+    lastIndex++;
+  }
+  void editElementAtSpecifiedIndex(int index, int element) {
+    if (index < 0) {
+      cout << "\nInvalid index";
+      return;
     }
-    void editElementAtSpecifiedIndex(int index, int element)
-    {
-        if (index < 0)
-        {
-            cout << "\nInvalid index";
-        }
 
-        ptr[index] = element;
+    ptr[index] = element;
+  }
+  void deleteElementAtSpecifiedIndex(int index) {
+    if (index < 0) {
+      cout << "\nInvalid index";
+      return;
     }
-    void deleteElementAtSpecifiedIndex(int index)
-    {
-        if (index < 0)
-        {
-            cout << "\nInvalid index";
-        }
 
-        for (int i = index; i < lastIndex; i++)
-        {
-            ptr[i] = ptr[i + 1];
-        }
-        lastIndex--;
+    for (int i = index; i < lastIndex; i++) {
+      ptr[i] = ptr[i + 1];
     }
-    bool arrayIsFullOrNot()
-    {
-        if (lastIndex == capacity - 1)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+    lastIndex--;
+  }
+  bool arrayIsFullOrNot() {
+    if (lastIndex == capacity - 1) {
+      return true;
+    } else {
+      return false;
     }
-    int getElement(int index)
-    {
-        if (index < 0)
-        {
-            cout << "\nInvalid index";
-        }
+  }
+  int getElement(int index) {
+    if (index < 0) {
+      cout << "\nInvalid index";
+      return 0;
+    }
 
-        return ptr[index];
+    return ptr[index];
+  }
+  void countElement() {
+    if (arrayEmptyOrNot()) {
+      cout << "\nArray is empty";
+      return;
+    } else {
+      int count = 0;
+      for (int i = 0; i <= lastIndex; i++) {
+        count++;
+      }
+      cout << "\n" << count << " total element present in the array";
     }
-    void countElement()
-    {
-        if (arrayEmptyOrNot())
-        {
-            cout << "\nArray is empty";
-        }
-        else
-        {
-            int count = 0;
-            for (int i = 0; i <= lastIndex; i++)
-            {
-                count++;
-            }
-            cout << "\n"
-                 << count << " total element present in the array";
-        }
+  }
+  int findElement(int element) {
+    if (arrayEmptyOrNot()) {
+      cout << "\nArray is empty";
+      return 0;
     }
-    int findElement(int element)
-    {
-        if (arrayEmptyOrNot())
-        {
-            cout << "\nArray is empty";
-        }
 
-        for (int i = 0; i <= lastIndex; i++)
-        {
-            if (ptr[i] == element)
-            {
-                return i;
-            }
-        }
-        return -1;
+    for (int i = 0; i <= lastIndex; i++) {
+      if (ptr[i] == element) {
+        return i;
+      }
     }
-    void display()
-    {
-        cout << endl;
-        for (int i = 0; i <= lastIndex; i++)
-        {
-            cout << ptr[i] << " ";
-        }
+    return -1;
+  }
+  void display() {
+    cout << endl;
+    for (int i = 0; i <= lastIndex; i++) {
+      cout << ptr[i] << " ";
     }
-    ~DynArray()
-    {
-        delete[] ptr;
-    }
+  }
+  ~DynArray() { delete[] ptr; }
 };
-int main()
-{
-    DynArray d(5);
-    d.appendNewElement(10);
-    d.appendNewElement(20);
-    d.appendNewElement(30);
-    d.display();
-    d.insertNewELementAtSpecificIndex(1, 0);
-    d.display();
-    d.editElementAtSpecifiedIndex(0, 10);
-    d.display();
-    d.deleteElementAtSpecifiedIndex(2);
-    d.display();
-    cout<<"\n"<<d.getElement(0);
-    d.countElement();
-    cout<<"\n"<<d.findElement(20);
-    return 0;
+int main() {
+  DynArray d(5);
+  d.appendNewElement(10);
+  d.appendNewElement(20);
+  d.appendNewElement(30);
+  d.display();
+  d.insertNewELementAtSpecificIndex(1, 0);
+  d.display();
+  d.editElementAtSpecifiedIndex(0, 10);
+  d.display();
+  d.deleteElementAtSpecifiedIndex(2);
+  d.display();
+  cout << "\n" << d.getElement(0);
+  d.countElement();
+  cout << "\n" << d.findElement(20);
+  return 0;
 }
