@@ -1,96 +1,90 @@
-#include <iostream>
+#include<iostream>
 using namespace std;
-
-struct node
-{
+struct node {
     node *prev;
-    int item;
+    int data;
     node *next;
 };
 
-class DoublyLinkedList
-{
-private:
-    node *start;
+class DLL {
+  node *start;
+    public:
+    DLL(){
+        start=nullptr;
+    }
+    void insertAtStart(int element){
+        node *n=new node;
+        n->prev=nullptr;
+        n->data=element;
+        n->next=start;
 
-public:
-    DoublyLinkedList()
-    {
-        start = nullptr;
-    }
-    void insertAtStart(int data)
-    {
-        node *n = new node; // create a new node
-        n->item = data;     // assign data to the new node
-        n->prev = nullptr;  // set previous pointer to nullptr
-        n->next = start;    // set next pointer to the current start node
-        if (start != nullptr)
-        {                    // if the list is not empty
-            start->prev = n; // set the previous pointer of the current start node to the new node
+        if(start!=nullptr){
+            start->prev=n;
         }
-        start = n; // update the start pointer to the new node
+
+        start=n;
     }
-    void insertAtEnd(int data)
-    {
-        node *n = new node; // create a new node
-        node *t;
-        n->item = data;       // assign data to the new node
-        n->next = nullptr;    // set next pointer to nullptr
-        if (start == nullptr) // if the list is empty
-        {
-            n->prev = nullptr; // set previous pointer to nullptr
-            start = n;         // update the start pointer to the new node
-        }
-        else
-        {
-            t = start;                 // create a temporary pointer to traverse the list
-            while (t->next != nullptr) // traverse until the end of the list
-            {
-                t = t->next; // move to the next node
+    void insertAtLast(int element){
+        node *n=new node;
+        n->data=element;
+        n->next=nullptr;
+
+        if(start==nullptr){
+            n->prev=nullptr;
+            start=n;
+        } else {
+            node *t;
+            t=start;
+            while(t->next!=nullptr){
+                t=t->next;
             }
-            t->next = n; // set the next pointer of the last node to the new node
-            n->prev = t; // set the previous pointer of the new node to the last node
+            t->next=n;
+            n->prev=t;
         }
     }
-    node *search(int data)
-    {
+    node *search(int element){
         node *t;
-        t = start;
-        while (t != nullptr)
-        {
-            if (t->item == data)
-            {
+        t=start;
+        while(t->next!=nullptr){
+            if(t->data==element){
                 return t;
             }
-            t = t->next;
+            t=t->next;
         }
-        return nullptr;
+        return t;
     }
-    void insertAfterTheSpecifiedNode()
-    {
+    void insertAfterSpecificNode(node *item, int element){
+       if(item==nullptr){
+           return;
+       }
+
+        node *n=new node;
+        n->data=element;
+        n->next=item->next;
+        n->prev=item;
+
+        item->next=n; 
     }
-    void deleteFirstNode(){
-        node *t;
+    void deleteFirst(){
         if(start!=nullptr){
             if(start->next==nullptr){
                 delete start;
-                start=nullptr;   
+                start=nullptr;
             } else {
-                t=start;
+                node *t=start;
                 t->next->prev=nullptr;
                 start=t->next;
                 delete t;
             }
         }
     }
-    void deleteLastNode(){
-        node *t;
+    void deleteLast(){
         if(start!=nullptr){
             if(start->next==nullptr){
                 delete start;
                 start=nullptr;
             } else {
-                t=start;
+                node *t=start;
                 while(t->next->next!=nullptr){
                     t=t->next;
                 }
@@ -99,28 +93,38 @@ public:
             }
         }
     }
-    void deleteNode(){
-        
+    void deleteNode(node *temp){
+    if(temp==nullptr){
+        return;
     }
-    void display()
-    {
-        node *temp = start; // create a temporary pointer to traverse the list
-        while (temp != nullptr)
-        {                              // traverse until the end of the list
-            cout << temp->item << " "; // print the item of the current node
-            temp = temp->next;         // move to the next node
-        }
-        cout << endl; // print a new line after displaying all items
+
+    if(temp==start){
+        deleteFirst();
+        return;
+    }
+
+    temp->prev->next=temp->next;
+
+    if(temp->next!=nullptr){
+        temp->next->prev=temp->prev;
+    }
+
+    delete temp;
     }
 };
-
-int main()
-{
-    DoublyLinkedList list;
-    list.insertAtStart(10);
-    list.display();
-    list.insertAtStart(20);
-    list.display();
-    node *searchNode = list.search(20);
+int main(){
     return 0;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
